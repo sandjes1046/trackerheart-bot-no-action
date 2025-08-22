@@ -259,13 +259,13 @@ class SessionTracker(Tracker):
     buttons = {
         "add": "⬆️",
         "remove": "⬇️",
-        "combat": "⚔️",
-        "combat": "⚔️",
+        #"combat": "⚔️",
+        #"combat": "⚔️",
     }
 
     # initialize variables
     def __init__(self, starting_fear):
-        super().__init__(starting_val=starting_fear, max_val=6)
+        super().__init__(starting_val=starting_fear, max_val=12)
     
     # initializes and sends out the tracker message
     # must be called after initializing
@@ -274,8 +274,8 @@ class SessionTracker(Tracker):
         await interaction.response.send_message("Starting tracker...",ephemeral=True)
         self.message = await interaction.channel.send(embed = self.gen_embed())
 
-        self.combat_tracker = SessionTracker.CombatTracker(session=self)
-        await self.combat_tracker.message_init(channel=self.message.channel)
+        #self.combat_tracker = SessionTracker.CombatTracker(session=self)
+        #await self.combat_tracker.message_init(channel=self.message.channel)
 
         # dictionary to store timer
         self.timers = {}
@@ -304,8 +304,8 @@ class SessionTracker(Tracker):
             elif emoji == self.buttons["remove"]:
                 self.model.tick_down()
                 await reaction.remove(user)
-            elif emoji == self.buttons["combat"]:
-                await self.combat_tracker.start_combat()
+            #elif emoji == self.buttons["combat"]:
+                #await self.combat_tracker.start_combat()
 
  
 
@@ -316,20 +316,20 @@ class SessionTracker(Tracker):
     async def reaction_removed(self, reaction: discord.Reaction, user: discord.User):
         if self.active:
             emoji = reaction.emoji
-            if emoji == self.buttons["combat"]:
-                await self.combat_tracker.end_combat()
+            #if emoji == self.buttons["combat"]:
+                #await self.combat_tracker.end_combat()
         await self.update()
 
     async def end_session(self):
-        await self.combat_tracker.end_combat()
-        self.active = False
+        #await self.combat_tracker.end_combat()
+        #self.active = False
         await self.update()
 
     def in_combat(self):
-        return self.combat_tracker.active
+        return #self.combat_tracker.active
 
     def get_combat_id(self):
-        return self.combat_tracker.get_id()
+        return #self.combat_tracker.get_id()
     
     def in_timer(self):
         for t in self.timers:
